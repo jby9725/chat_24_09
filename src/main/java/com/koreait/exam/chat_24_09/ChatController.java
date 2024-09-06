@@ -12,19 +12,21 @@ public class ChatController {
 
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
-//    @AllArgsConstructor
+    //    @AllArgsConstructor
 //    @Getter
 //    public static class writeMessageRequest {
 //        private final String authorName;
 //        private final String content;
 //    }
-
+//    (==)
     public record writeMessageRequest(String authorName, String content) {
     }
 
-
     public record writeMessageResponse(long id) {
 
+    }
+
+    public record messagesResponse(List<ChatMessage> chatMessages, long messageCount) {
     }
 
     @PostMapping("/writeMessage")
@@ -42,10 +44,10 @@ public class ChatController {
 
     @GetMapping("/messages")
     @ResponseBody
-    public RsData<List<ChatMessage>> messages() {
+    public RsData<messagesResponse> messages() {
         return new RsData<>("S-1",
                 "성공",
-                chatMessages
+                new messagesResponse(chatMessages, chatMessages.size())
         );
     }
 }
