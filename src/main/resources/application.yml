@@ -1,2 +1,5 @@
 server:
   port: 8081
+logging:
+  level:
+    com.koreait.exam.chat_24_09 : debug
