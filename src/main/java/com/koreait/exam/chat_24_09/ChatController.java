@@ -1,6 +1,7 @@
 package com.koreait.exam.chat_24_09;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,6 +29,15 @@ public class ChatController {
         return new RsData<>("S-1",
                 "메세지가 작성됨",
                 new writeChatMessageResponse(message.getId())
+        );
+    }
+
+    @GetMapping("/messages")
+    @ResponseBody
+    public RsData<List<ChatMessage>> messages() {
+        return new RsData<>("S-1",
+                "성공",
+                chatMessages
         );
     }
 }
