@@ -1,0 +1,77 @@
+<div class="chat">
+    <form action="" onSubmit="Chat__submitWriteMessageForm(this); return false;">
+        <input name="authorName" type="text" placeholder="작성자">
+        <input name="content" type="text" placeholder="내용">
+        <input type="submit" value="작성">
+    </form>
+
+    <div class="chat__messagebox">
+        <ul class="chat__message-ul">
+
+        </ul>
+    </div>
+</div>
+
+<script>
+    // ajax 유틸리티 함수
+    function fetchPost(url, data) {
+        return fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            body: JSON.stringify(data)
+        }).then((response) => response.json());
+    }
+
+    function fetchGet(url, data) {
+        let query = Object.keys(data)
+            .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(data[k]))
+            .join("&");
+
+        return fetch(url + "?" + query, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            }
+        }).then((response) => response.json());
+    }
+
+    // 유틸리티 함수 끝
+</script>
+
+<script>
+    // 채팅 작성 폼
+    function Chat__submitWriteMessageForm(form) {
+        form.authorName.value = form.authorName.value.trim();
+
+        if (form.authorName.value.length == 0) {
+            alert("작성자 누구??");
+            form.authorName.focus();
+            return;
+        }
+
+        form.content.value = form.content.value.trim();
+
+        if (form.content.value.length == 0) {
+            alert("내용 무엇??");
+            form.content.focus();
+            return;
+        }
+
+        fetchPost("/chat/writeMessage", {
+            authorName: form.authorName.value,
+            content: form.content.value
+        }).then(console.log);
+
+        form.content.value = '';
+        form.content.focus();
+
+        // POST http://localhost:8080/chat/writeMessage
+    }
+
+    // 채팅 작성 폼 끝
+
+</script>

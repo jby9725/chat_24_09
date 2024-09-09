@@ -74,4 +74,9 @@ public class ChatController {
                 new messagesResponse(messages, messages.size())
         );
     }
+
+    @GetMapping("/room")
+    public String showRoom() {
+        return "chat/room";
+    }
 }
