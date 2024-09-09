@@ -10,6 +10,7 @@
 
         </ul>
     </div>
+    <button onclick="Chat__loadMore();">로드</button>
 </div>
 
 <script>
@@ -73,5 +74,41 @@
     }
 
     // 채팅 작성 폼 끝
+
+    // 채팅 메세지 읽기 (read)
+    // 클라이언트가 받은 메세지의 번호를 입력해야함
+    // --> 메세지 가져오기 요청시에 필요한 부분만 잘라서 가져올 수 있다.
+    let Chat__lastLoadedId = 0;
+
+    function Chat__loadMore() {
+        fetchGet("/chat/messages", {
+            fromId: Chat__lastLoadedId
+        })
+            .then(body => {
+                console.log('body :' + body);
+                console.log('body.data : ' + body.data);
+                console.log('body.data.chatMessages : ' + body.data.chatMessages);
+                Chat__drawMessages(body.data.chatMessages);
+            });
+    }
+
+
+    const Chat_elMessageUl = document.querySelector('.chat__message-ul');
+
+    function Chat__drawMessages(messages) {
+        if (messages.length == 0) return;
+
+        // 메세지를 그리기 전에 Chat__lastLoadedUuid 변수를 갱신합니다.
+        Chat__lastLoadedId = messages[messages.length - 1].id;
+        console.log(Chat__lastLoadedId);
+
+        messages.forEach((message) => {
+            Chat_elMessageUl
+                .insertAdjacentHTML(
+                    "afterBegin",
+                    `<li>${message.authorName} : ${message.content}</li>`
+                );
+        });
+    }
 
 </script>
